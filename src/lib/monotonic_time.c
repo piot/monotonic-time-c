@@ -1,18 +1,18 @@
 #include <monotonic-time/monotonic_time.h>
-#include <time.h>
 #include <sys/time.h>
+#include <time.h>
 
-static inline uint64_t timespecToMilliSeconds(const struct timespec *t)
+static inline uint64_t timespecToMilliSeconds(const struct timespec* t)
 {
     return t->tv_sec * 1000;
 }
 
-static inline uint64_t timespecToNanoSeconds(const struct timespec *t)
+static inline uint64_t timespecToNanoSeconds(const struct timespec* t)
 {
     return t->tv_sec * 10e9 + t->tv_nsec;
 }
 
-static inline uint64_t timevalToMilliseconds(const struct timeval *t)
+static inline uint64_t timevalToMilliseconds(const struct timeval* t)
 {
     return t->tv_sec * 1000 + t->tv_usec / 1000;
 }
