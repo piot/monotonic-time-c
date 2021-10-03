@@ -1,12 +1,21 @@
 #include <monotonic-time/monotonic_time.h>
 #include <stdio.h>
-
+#include <Windows.h>
 int main(int argc, char* argv[])
 {
-    MonotonicTimeMs now = monotonicTimeMicrosecondsNow();
-    printf("testing\n");
+    printf("ready...\n");
+    Sleep(1000);
 
-    MonotonicTimeMs after = monotonicTimeMicrosecondsNow();
-    printf("%lu %lu %lu", now, after, after - now);
+    printf("START!\n");
+    MonotonicTimeMs nowms = monotonicTimeMsNow();
+    MonotonicTimeNanoseconds now = monotonicTimeNanosecondsNow();
+    Sleep(980);
+
+    MonotonicTimeNanoseconds after = monotonicTimeNanosecondsNow();
+    MonotonicTimeMs afterms = monotonicTimeMsNow();
+    printf("End!\n");
+    printf("\n%lu %lu %lu\n", now, after, after - now);
+
+    printf("%lu %lu %lu\n", nowms, afterms, afterms - nowms);
     return 0;
 }

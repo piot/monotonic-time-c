@@ -3,11 +3,13 @@
 
 #include <stdint.h>
 
-typedef uint64_t MonotonicTimeMs;
+typedef int64_t MonotonicTimeMs;
 
 MonotonicTimeMs monotonicTimeMsNow();
 
-typedef uint64_t MonotonicTimeNanoseconds;
+typedef int64_t MonotonicTimeNanoseconds;
+
+typedef int64_t MonotonicTimestamp;
 
 MonotonicTimeNanoseconds monotonicTimeNanosecondsNow();
 
