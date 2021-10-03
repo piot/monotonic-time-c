@@ -3,8 +3,10 @@
 
 int main(int argc, char* argv[])
 {
-    MonotonicTimeMs now = monotonicTimeMsNow();
+    MonotonicTimeMs now = monotonicTimeMicrosecondsNow();
+    printf("testing\n");
 
-    printf("%lu", now);
+    MonotonicTimeMs after = monotonicTimeMicrosecondsNow();
+    printf("%lu %lu %lu", now, after, after - now);
     return 0;
 }

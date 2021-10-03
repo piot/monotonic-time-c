@@ -1,3 +1,4 @@
+//#include <clog/clog.h>
 #include <monotonic-time/monotonic_time.h>
 #include <sys/time.h>
 #include <time.h>
@@ -19,10 +20,37 @@ static inline uint64_t timevalToMilliseconds(const struct timeval* t)
 
 MonotonicTimeMs monotonicTimeMsNow()
 {
-#if 0
+#if 1
     struct timespec time;
-    clock_gettime(CLOCK_MONOTONIC, &time);
+    int ret = clock_gettime(CLOCK_MONOTONIC_RAW, &time);
+    if (ret < 0) {
+        //CLOG_ERROR("couldn't gettime");
+    }
 
+    return time.tv_sec * 1000 + time.tv_nsec / 1000000;
+#else
+    struct timeval tv;
+
+    int errorCode = gettimeofday(&tv, 0);
+    if (errorCode < 0) {
+        return 0;
+    }
+
+    return timevalToMilliseconds(&tv);
+#endif
+}
+
+
+MonotonicTimeNanoseconds monotonicTimeNanosecondsNow()
+{
+#if 1
+    struct timespec time;
+    int ret = clock_gettime(CLOCK_MONOTONIC_RAW, &time);
+    if (ret < 0) {
+        //CLOG_ERROR("couldn't gettime");
+    }
+
+    return time.tv_sec * 1000000000  + time.tv_nsec;
 #else
     struct timeval tv;
 

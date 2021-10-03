@@ -7,4 +7,8 @@ typedef uint64_t MonotonicTimeMs;
 
 MonotonicTimeMs monotonicTimeMsNow();
 
+typedef uint64_t MonotonicTimeNanoseconds;
+
+MonotonicTimeNanoseconds monotonicTimeNanosecondsNow();
+
 #endif
