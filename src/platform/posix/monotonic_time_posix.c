@@ -50,3 +50,4 @@ MonotonicTimeNanoseconds monotonicTimeNanosecondsNow()
     return time.tv_sec * 10e9  + time.tv_nsec;
 }
 
+#endif

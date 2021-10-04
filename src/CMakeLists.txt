@@ -41,6 +41,12 @@ if (WIN32)
         )
 
     set(OS_WINDOWS 1)
+else()
+    file(GLOB_RECURSE platform_src FOLLOW_SYMLINKS
+            "${platform}/posix/*.c"
+            )
+
+
 endif()
 
 
