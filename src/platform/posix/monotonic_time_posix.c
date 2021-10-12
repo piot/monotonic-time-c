@@ -25,7 +25,7 @@ MonotonicTimeMs monotonicTimeMsNow()
         CLOG_ERROR("couldn't gettime");
     }
 
-    return time.tv_sec * 10e3 + time.tv_nsec / 10e6;
+    return time.tv_sec * 1000 + time.tv_nsec / 1000000;
 #else
     struct timeval tv;
 
