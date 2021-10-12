@@ -1,7 +1,11 @@
 #include <clog/clog.h>
 #ifndef TORNADO_OS_WINDOWS
 #include <monotonic-time/monotonic_time.h>
+#if TORNADO_OS_WINDOWS
+#include <WinSock2.h>
+#else
 #include <sys/time.h>
+#endif
 #include <time.h>
 
 
