@@ -54,7 +54,7 @@ MonotonicTimeNanoseconds monotonicTimeNanosecondsNow()
         CLOG_ERROR("couldn't gettime");
     }
 
-    return time.tv_sec * 10e9  + time.tv_nsec;
+    return time.tv_sec * 1000000000  + time.tv_nsec;
 }
 
 #endif
