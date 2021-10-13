@@ -21,7 +21,12 @@ MonotonicTimeMs monotonicTimeMsNow()
 {
 #if 1
     struct timespec time;
-    int ret = clock_gettime(CLOCK_MONOTONIC_RAW, &time);
+    #ifndef CLOCK_MONOTONIC_RAW
+    #define MONOTONIC_TIME_TO_USE CLOCK_MONOTONIC
+    #else
+    #define MONOTONIC_TIME_TO_USE CLOCK_MONOTONIC_RAW
+    #endif
+    int ret = clock_gettime(MONOTONIC_TIME_TO_USE, &time);
     if (ret != 0) {
         CLOG_ERROR("couldn't gettime");
     }
