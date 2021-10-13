@@ -16,16 +16,17 @@ static inline uint64_t timevalToMilliseconds(const struct timeval* t)
     return t->tv_sec * 1000 + t->tv_usec / 1000;
 }
 
+#ifndef CLOCK_MONOTONIC_RAW
+#define MONOTONIC_TIME_TO_USE CLOCK_MONOTONIC
+#else
+#define MONOTONIC_TIME_TO_USE CLOCK_MONOTONIC_RAW
+#endif
 
 MonotonicTimeMs monotonicTimeMsNow()
 {
 #if 1
     struct timespec time;
-    #ifndef CLOCK_MONOTONIC_RAW
-    #define MONOTONIC_TIME_TO_USE CLOCK_MONOTONIC
-    #else
-    #define MONOTONIC_TIME_TO_USE CLOCK_MONOTONIC_RAW
-    #endif
+
     int ret = clock_gettime(MONOTONIC_TIME_TO_USE, &time);
     if (ret != 0) {
         CLOG_ERROR("couldn't gettime");
@@ -48,7 +49,7 @@ MonotonicTimeMs monotonicTimeMsNow()
 MonotonicTimeNanoseconds monotonicTimeNanosecondsNow()
 {
     struct timespec time;
-    int ret = clock_gettime(CLOCK_MONOTONIC_RAW, &time);
+    int ret = clock_gettime(MONOTONIC_TIME_TO_USE, &time);
     if (ret != 0) {
         CLOG_ERROR("couldn't gettime");
     }
