@@ -1,6 +1,8 @@
 #include <clog/clog.h>
 #ifndef TORNADO_OS_WINDOWS
 #include <monotonic-time/monotonic_time.h>
+#endif
+
 #if TORNADO_OS_WINDOWS
 #include <WinSock2.h>
 #else
@@ -11,7 +13,7 @@
 
 static inline uint64_t timespecToNanoSeconds(const struct timespec* t)
 {
-    return t->tv_sec * 10e9 + t->tv_nsec;
+    return t->tv_sec * 1000000000 + t->tv_nsec;
 }
 
 static inline uint64_t timevalToMilliseconds(const struct timeval* t)
