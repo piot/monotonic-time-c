@@ -5,12 +5,12 @@
 
 typedef int64_t MonotonicTimeMs;
 
-MonotonicTimeMs monotonicTimeMsNow();
+MonotonicTimeMs monotonicTimeMsNow(void);
 
 typedef int64_t MonotonicTimeNanoseconds;
 
 typedef int64_t MonotonicTimestamp;
 
-MonotonicTimeNanoseconds monotonicTimeNanosecondsNow();
+MonotonicTimeNanoseconds monotonicTimeNanosecondsNow(void);
 
 #endif

@@ -2,7 +2,7 @@
 #include <Windows.h>
 #include <monotonic-time/monotonic_time.h>
 
-MonotonicTimeMs monotonicTimeMsNow()
+MonotonicTimeMs monotonicTimeMsNow(void)
 {
     LARGE_INTEGER startingTime;
     LARGE_INTEGER frequency;
@@ -12,7 +12,7 @@ MonotonicTimeMs monotonicTimeMsNow()
     return startingTime.QuadPart * 1000 / frequency.QuadPart;
 }
 
-MonotonicTimeNanoseconds monotonicTimeNanosecondsNow()
+MonotonicTimeNanoseconds monotonicTimeNanosecondsNow(void)
 {
     LARGE_INTEGER startingTime;
     LARGE_INTEGER frequency;
