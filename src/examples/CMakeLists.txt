@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.17)
 project(monotonic_time_example C)
 
+
+set(deps ../../deps/)
 set(CMAKE_C_STANDARD 99)
 
 if (WIN32)
@@ -21,6 +23,9 @@ if (WIN32)
     set(OS_WINDOWS 1)
 endif()
 
+
+target_include_directories(monotonic_time_example PRIVATE ${deps}/clog/src/include)
+target_include_directories(monotonic_time_example PRIVATE ${deps}/tiny-libc/src/include)
 
 if (OS_WINDOWS)
 target_link_libraries(monotonic_time_example monotonic_time_lib)

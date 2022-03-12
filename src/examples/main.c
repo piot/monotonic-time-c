@@ -1,15 +1,22 @@
 #include <monotonic-time/monotonic_time.h>
 #include <stdio.h>
+#include <clog/console.h>
+#if TORNADO_OS_WINDOWS
 #include <Windows.h>
+#endif
+
+clog_config g_clog;
+
 int main(int argc, char* argv[])
 {
+    g_clog.log = clog_console;
     printf("ready...\n");
-    Sleep(1000);
+    //Sleep(1000);
 
     printf("START!\n");
     MonotonicTimeMs nowms = monotonicTimeMsNow();
     MonotonicTimeNanoseconds now = monotonicTimeNanosecondsNow();
-    Sleep(980);
+   // Sleep(980);
 
     MonotonicTimeNanoseconds after = monotonicTimeNanosecondsNow();
     MonotonicTimeMs afterms = monotonicTimeMsNow();
