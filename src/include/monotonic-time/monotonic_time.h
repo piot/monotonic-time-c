@@ -13,4 +13,6 @@ typedef int64_t MonotonicTimestamp;
 
 MonotonicTimeNanoseconds monotonicTimeNanosecondsNow(void);
 
+#define MONOTONIC_NS_TO_MS(time) ((time)/1000000)
+
 #endif
