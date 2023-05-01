@@ -22,7 +22,7 @@ static inline uint64_t timevalToMilliseconds(const struct timeval* t)
 #define MONOTONIC_TIME_TO_USE CLOCK_MONOTONIC_RAW
 #endif
 
-MonotonicTimeMs monotonicTimeMsNow()
+MonotonicTimeMs monotonicTimeMsNow(void)
 {
 #if 1
     struct timespec time;
@@ -46,7 +46,7 @@ MonotonicTimeMs monotonicTimeMsNow()
 }
 
 
-MonotonicTimeNanoseconds monotonicTimeNanosecondsNow()
+MonotonicTimeNanoseconds monotonicTimeNanosecondsNow(void)
 {
     struct timespec time;
     int ret = clock_gettime(MONOTONIC_TIME_TO_USE, &time);
