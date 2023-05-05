@@ -1,10 +1,13 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Peter Bjorklund. All rights reserved.
+ *  Licensed under the MIT License. See LICENSE in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
 #ifndef TORNADO_OS_WINDOWS
 #include <clog/clog.h>
 #include <monotonic-time/monotonic_time.h>
 
 #include <sys/time.h>
 #include <time.h>
-
 
 static inline uint64_t timespecToNanoSeconds(const struct timespec* t)
 {
@@ -45,7 +48,6 @@ MonotonicTimeMs monotonicTimeMsNow(void)
 #endif
 }
 
-
 MonotonicTimeNanoseconds monotonicTimeNanosecondsNow(void)
 {
     struct timespec time;
@@ -54,7 +56,7 @@ MonotonicTimeNanoseconds monotonicTimeNanosecondsNow(void)
         CLOG_ERROR("couldn't gettime");
     }
 
-    return time.tv_sec * 1000000000  + time.tv_nsec;
+    return time.tv_sec * 1000000000 + time.tv_nsec;
 }
 
 #endif
