@@ -9,6 +9,10 @@
 #include <sys/time.h>
 #include <time.h>
 
+#define MONOTONIC_TIME_USE_GETTIME (1)
+
+
+#ifndef MONOTONIC_TIME_USE_GETTIME
 static inline uint64_t timespecToNanoSeconds(const struct timespec* t)
 {
     return t->tv_sec * 1000000000 + t->tv_nsec;
@@ -18,6 +22,7 @@ static inline uint64_t timevalToMilliseconds(const struct timeval* t)
 {
     return t->tv_sec * 1000 + t->tv_usec / 1000;
 }
+#endif
 
 #ifndef CLOCK_MONOTONIC_RAW
 #define MONOTONIC_TIME_TO_USE CLOCK_MONOTONIC
@@ -27,7 +32,7 @@ static inline uint64_t timevalToMilliseconds(const struct timeval* t)
 
 MonotonicTimeMs monotonicTimeMsNow(void)
 {
-#if 1
+#if MONOTONIC_TIME_USE_GETTIME
     struct timespec time;
 
     int ret = clock_gettime(MONOTONIC_TIME_TO_USE, &time);
