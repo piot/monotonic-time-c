@@ -23,7 +23,7 @@ MonotonicTimeMs monotonicTimeMsFromLowerBits(MonotonicTimeMs now, MonotonicTimeL
 
     uint64_t diff = (uint64_t) now - receivedMonotonic;
     if (diff > 3000) {
-        CLOG_ERROR("suspicious time lower bits diff %d", diff);
+        CLOG_SOFT_ERROR("suspicious time lower bits diff %d", diff);
     }
 
     return receivedMonotonic;
