@@ -4,6 +4,7 @@
  *--------------------------------------------------------------------------------------------*/
 #include <clog/clog.h>
 #include <monotonic-time/lower_bits.h>
+#include <inttypes.h>
 
 MonotonicTimeLowerBitsMs monotonicTimeMsToLowerBits(MonotonicTimeMs now)
 {
@@ -23,7 +24,7 @@ MonotonicTimeMs monotonicTimeMsFromLowerBits(MonotonicTimeMs now, MonotonicTimeL
 
     uint64_t diff = (uint64_t) now - receivedMonotonic;
     if (diff > 3000) {
-        CLOG_SOFT_ERROR("suspicious time lower bits diff %d", diff);
+        CLOG_SOFT_ERROR("suspicious time lower bits diff %" PRIu64, diff);
     }
 
     return receivedMonotonic;
