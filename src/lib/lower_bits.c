@@ -8,7 +8,7 @@
 
 MonotonicTimeLowerBitsMs monotonicTimeMsToLowerBits(MonotonicTimeMs now)
 {
-    return now & 0xfffff;
+    return (uint16_t)(now & 0xfffff);
 }
 
 MonotonicTimeMs monotonicTimeMsFromLowerBits(MonotonicTimeMs now, MonotonicTimeLowerBitsMs lowerBits)
@@ -24,8 +24,8 @@ MonotonicTimeMs monotonicTimeMsFromLowerBits(MonotonicTimeMs now, MonotonicTimeL
 
     uint64_t diff = (uint64_t) now - receivedMonotonic;
     if (diff > 3000) {
-        CLOG_SOFT_ERROR("suspicious time lower bits diff %" PRIu64, diff);
+        CLOG_SOFT_ERROR("suspicious time lower bits diff %" PRIu64, diff)
     }
 
-    return receivedMonotonic;
+    return (MonotonicTimeMs) receivedMonotonic;
 }
