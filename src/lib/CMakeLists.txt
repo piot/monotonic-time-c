@@ -3,7 +3,6 @@ cmake_minimum_required(VERSION 3.16.3)
 set(CMAKE_C_STANDARD 99)
 set(CMAKE_C_EXTENSIONS false)
 
-
 # --- Detect CMake build type, compiler and operating system ---
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
@@ -13,7 +12,6 @@ else()
   message("detected release build")
   set(isDebug FALSE)
 endif()
-
 
 if(CMAKE_C_COMPILER_ID MATCHES "Clang")
   set(COMPILER_NAME "clang")
@@ -35,44 +33,39 @@ if(useSanitizers)
   set(sanitizers "-fsanitize=address")
 endif()
 
+if(APPLE)
+  message("MacOS detected!")
+  set(OS_MACOS 1)
+elseif(UNIX)
+  message("Linux Detected!")
+  set(OS_LINUX 1)
+elseif(WIN32)
+  message("Windows detected!")
+  set(OS_WINDOWS 1)
+endif()
 
 # --- Library ---
 
-
 file(GLOB lib_src FOLLOW_SYMLINKS "./*.c")
+if(OS_WINDOWS)
+  file(GLOB platform_src FOLLOW_SYMLINKS "../platform/windows/*.c")
+else()
+  file(GLOB platform_src FOLLOW_SYMLINKS "../platform/posix/*.c")
+endif()
 
+add_library(monotonic-time STATIC ${lib_src} ${platform_src})
 
-add_library(monotonic-time STATIC ${lib_src})
-
-
-if(APPLE)
+if(OS_MACOS)
   target_compile_definitions(monotonic-time PRIVATE TORNADO_OS_MACOS)
-  set(OS_MACOS 1)
-elseif(UNIX)
+elseif(OS_LINUX)
   target_compile_definitions(monotonic-time PRIVATE TORNADO_OS_LINUX)
-  set(OS_LINUX 1)
-elseif(WIN32)
+elseif(OS_WINDOWS)
   target_compile_definitions(monotonic-time PRIVATE TORNADO_OS_WINDOWS)
-  set(OS_WINDOWS 1)
-
 endif()
 
 if(isDebug)
   message("Setting definitions based on debug")
   target_compile_definitions(monotonic-time PRIVATE CONFIGURATION_DEBUG)
-endif()
-
-
-function(unixlike)
-endfunction()
-
-if(OS_LINUX)
-  message("Linux Detected!")
-  unixlike()
-
-elseif(OS_MACOS)
-  message("MacOS detected!")
-  unixlike()
 endif()
 
 target_include_directories(monotonic-time PUBLIC ../include)
@@ -86,11 +79,12 @@ if(COMPILER_CLANG)
             -Wno-declaration-after-statement # must be bug in clang? shows up
                                              # even if std=c99
             -Wno-unsafe-buffer-usage # unclear why it fails on clang-16
-            -Wno-unknown-warning-option # support newer clang versions, e.g. clang-16
-            -Wno-disabled-macro-expansion
+            -Wno-unknown-warning-option # support newer clang versions, e.g.
+                                        # clang-16
+            -Wno-disabled-macro-expansion # bug in emscripten compiler?
             ${sanitizers})
 elseif(COMPILER_GCC)
-target_compile_options(
+  target_compile_options(
     monotonic-time
     PRIVATE -Wall
             -Wextra
@@ -101,33 +95,21 @@ target_compile_options(
 elseif(COMPILER_MSVC)
   target_compile_options(
     monotonic-time
-    PRIVATE /F
-            5000000
-            /Wall
-            /wd4668
-            /wd4820
-            /wd4100
-            /wd4710
-            /wd4711
-            /wd5945
-            /wd5105
-            /wd5045
-            /we4047
-            /we4255
-            /we4013
-            /we4020
-            /we4474
-            /we4477
-            /we4057
-            /we4101
-            /we4189) # /WX
+    PRIVATE /Wall
+            /WX
+            # /F 5000000 # stack size
+            /wd4820 # bytes padding added after data member
+            /wd4668 # bug in winioctl.h (is not defined as a preprocessor macro,
+                    # replacing with '0' for '#if/#elif')
+            /wd5045 # Compiler will insert Spectre mitigation for memory load if
+                    # /Qspectre switch specified
+            /wd4005 # Bug in ntstatus.h (macro redefinition)
+  )
 else()
   target_compile_options(monotonic-time PRIVATE -Wall)
 endif()
 
-
 target_link_libraries(monotonic-time PUBLIC clog)
-
 
 if(useSanitizers)
   target_link_libraries(monotonic-time PRIVATE ${sanitizers})
@@ -136,8 +118,4 @@ endif()
 if(NOT isDebug)
   message("optimize!")
   target_compile_options(monotonic-time PRIVATE -O3)
-endif()
-
-if (NOT MSVC)
-target_link_libraries(monotonic-time PRIVATE m)
 endif()
