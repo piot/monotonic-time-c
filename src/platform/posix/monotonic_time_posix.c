@@ -5,12 +5,10 @@
 #ifndef TORNADO_OS_WINDOWS
 #include <clog/clog.h>
 #include <monotonic-time/monotonic_time.h>
-
 #include <sys/time.h>
 #include <time.h>
 
 #define MONOTONIC_TIME_USE_GETTIME (1)
-
 
 #ifndef MONOTONIC_TIME_USE_GETTIME
 static inline uint64_t timespecToNanoSeconds(const struct timespec* t)
@@ -37,7 +35,7 @@ MonotonicTimeMs monotonicTimeMsNow(void)
 
     int ret = clock_gettime(MONOTONIC_TIME_TO_USE, &time);
     if (ret != 0) {
-        CLOG_ERROR("couldn't gettime");
+        CLOG_ERROR("couldn't gettime")
     }
 
     return time.tv_sec * 1000 + time.tv_nsec / 1000000;
@@ -58,7 +56,7 @@ MonotonicTimeNanoseconds monotonicTimeNanosecondsNow(void)
     struct timespec time;
     int ret = clock_gettime(MONOTONIC_TIME_TO_USE, &time);
     if (ret != 0) {
-        CLOG_ERROR("couldn't gettime");
+        CLOG_ERROR("couldn't gettime")
     }
 
     return time.tv_sec * 1000000000 + time.tv_nsec;
