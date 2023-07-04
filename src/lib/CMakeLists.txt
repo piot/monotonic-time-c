@@ -83,6 +83,7 @@ if(COMPILER_CLANG)
             -Wno-unknown-warning-option # support newer clang versions, e.g.
                                         # clang-16
             -Wno-disabled-macro-expansion # bug in emscripten compiler?
+            -Wno-poison-system-directories # might be bug in emscripten compiler?
             ${sanitizers})
 elseif(COMPILER_GCC)
   target_compile_options(
